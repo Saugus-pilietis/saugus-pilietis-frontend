@@ -27,6 +27,6 @@ async function fetchKey() {
 
 export default GoogleApiWrapper({
   //apiKey: (fetchKey())
-   apiKey: "AIzaSyAJUE6-exmeZ2r78A48md1N7lx9GYxCggM"
+   apiKey: ""
 })(GoogleMap)
  
