@@ -16,7 +16,7 @@ import {
 
 function SideBar(props) {
     return(
-            <Accordion className="h-100">
+            <Accordion className="h-100" id="sidebar">
                 <Card className="h-100 w-100">
                     <Accordion.Collapse id="sidebar-collapse" eventKey="0" className="show w-13 color green-bg white-text list-item-text h-100">
                         <Card.Body id="sidebar-list" className="position-fixed">
@@ -37,19 +37,6 @@ function SideBar(props) {
                                         </Card>
                                         <Card>
                                             <Card.Header>
-                                              <Accordion.Toggle as={Button} variant="link" eventKey="1" className="white-text list-item-text">
-                                                Vandens tarša
-                                              </Accordion.Toggle>
-                                            </Card.Header>
-                                            <Accordion.Collapse eventKey="1">
-                                              <Card.Body>
-                                                  <Link to="/water/map"><ListGroup.Item>Žemėlapis</ListGroup.Item></Link>
-                                                  <Link to="/water/statistics"><ListGroup.Item>Statistika</ListGroup.Item></Link>
-                                              </Card.Body>
-                                            </Accordion.Collapse>
-                                        </Card>
-                                        <Card>
-                                            <Card.Header>
                                               <Accordion.Toggle as={Button} variant="link" eventKey="2" className="white-text list-item-text">
                                                 Radiacijos lygis
                                               </Accordion.Toggle>
@@ -63,46 +50,20 @@ function SideBar(props) {
                                               </Card.Body>
                                             </Accordion.Collapse>
                                         </Card>
-                                        <Card>
-                                            <Card.Header>
-                                              <Accordion.Toggle as={Button} variant="link" eventKey="3" className="white-text list-item-text">
-                                                Įvykus nelaimei
-                                              </Accordion.Toggle>
-                                            </Card.Header>
-                                            <Accordion.Collapse eventKey="3">
-                                              <Card.Body>
-                                                  <Link to="/disaster/radiation"><ListGroup.Item>Radiacijos pavojus</ListGroup.Item></Link>
-                                                  <Link to="/disaster/air"><ListGroup.Item>Oro taršos pavojus</ListGroup.Item></Link>
-                                                  <Link to="/disaster/water"><ListGroup.Item>Vandens taršos pavojus</ListGroup.Item></Link>
-                                              </Card.Body>
-                                            </Accordion.Collapse>
-                                        </Card>
-                                        <Card>
-                                            <Card.Header>
-                                              <Accordion.Toggle as={Button} variant="link" eventKey="4" className="white-text list-item-text">
-                                                Evakuacija
-                                              </Accordion.Toggle>
-                                            </Card.Header>
-                                            <Accordion.Collapse eventKey="4">
-                                              <Card.Body>
-                                                  <Link to="/evacuation/meeting-points"><ListGroup.Item>Susitikimo taškai</ListGroup.Item></Link>
-                                                  <Link to="/evacuation/bunkers"><ListGroup.Item>Bunkeriai</ListGroup.Item></Link>
-                                                  <Link to="/evacuation/plans"><ListGroup.Item>Planai</ListGroup.Item></Link>
-                                              </Card.Body>
-                                            </Accordion.Collapse>
-                                        </Card>
                                     </Accordion>
                                 <ListGroup.Item>
                                     <DropdownButton
                                       variant="outline-light"
-                                      title="Pasirinkite miestą"
+                                      title={props.currentCity}
                                       id="input-group-dropdown-1"
                                       className="my-auto"
                                       size="lg"
                                     >
-                                        <Dropdown.Item href="#">Kaunas</Dropdown.Item>
-                                        <Dropdown.Item href="#">Klaipėda</Dropdown.Item>
-                                        <Dropdown.Item href="#">Vilnius</Dropdown.Item>
+                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Kaunas")}>Kaunas</Dropdown.Item>
+                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Klaipėda")}>Klaipėda</Dropdown.Item>
+                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Vilnius")}>Vilnius</Dropdown.Item>
+                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Šiauliai")}>Šiauliai</Dropdown.Item>
+                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Panevėžys")}>Panevėžys</Dropdown.Item>
                                     </DropdownButton>
                                 </ListGroup.Item>
                             </ListGroup>

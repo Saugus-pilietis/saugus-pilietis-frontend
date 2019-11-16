@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import TopBar from './Topbar.jsx';
 import SideBar from './Sidebar.jsx';
 import Content from './Content.jsx';
+import GoogleMap from './GoogleMap.jsx';
 
 import {
     Switch,
@@ -18,9 +19,10 @@ import {
     Link,
     Redirect,
     withRouter,
+    observer,
 } from "react-router-dom";
 
-import { 
+import {
     ComposableMap, 
     Geographies, 
     Geography, 
@@ -29,6 +31,8 @@ import {
 
 import { geolocated } from "react-geolocated";
 import Geocode from "react-geocode";
+import { findNearest } from 'geolib';
+
 
 let QRCode = require('qrcode.react');
 
@@ -58,6 +62,10 @@ class App extends React.Component {
             width : 0,
             latitude : 0,
             logtitude : 0,
+            currentCity : "Vilnius",
+            executedOnce : false,
+            mapWidth :  0,
+            currentMapState : 1,
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -79,17 +87,46 @@ class App extends React.Component {
 
     updateWindowDimensions() {
         if (window.innerWidth <= 768) {
+            if (document.getElementById('sidebar-collapse') == null) {
+                return;
+            }
             document.getElementById("sidebar-collapse").classList.add("negative-margin");
             document.getElementById("showQRModal").classList.add("d-none");
+            this.setState({
+                mapWidth : window.innerWidth,
+                currentMapState : 1,
+            });
         } else {
-            document.getElementById("showQRModal").classList.remove("d-none");        
+            if (document.getElementById('sidebar-collapse') == null) {
+                return;
+            }
+            document.getElementById("showQRModal").classList.remove("d-none");
+            document.getElementById("sidebar-collapse").classList.remove("negative-margin"); 
+            this.setState({
+                mapWidth : window.innerWidth-document.getElementById('sidebar').offsetWidth,
+                currentMapState : 0,
+            });       
         }
 
         this.setState({ width: window.innerWidth});
     }
 
     collapseSideMenu() {
+        var that = this;
         document.getElementById("sidebar-collapse").classList.toggle("negative-margin");
+        setTimeout(function() {
+            let newMapWidth = that.state.currentMapState == 0 ? that.state.width : that.state.width-document.getElementById('sidebar').offsetWidth;
+            let newCurrentMapState = that.state.currentMapState == 0 ? 1 : 0;
+            console.log(newMapWidth);
+            
+            that.setState({
+                mapWidth : newMapWidth,
+                currentMapState : newCurrentMapState,
+            })
+        },
+            450
+        );
+        
 
     }
 
@@ -102,27 +139,30 @@ class App extends React.Component {
     }
 
     getLocation(longitude, latitude) {
-        Geocode.setApiKey("AIzaSyAC20XccXucy_E6zn6BaQ71n4N5HPAti8g");
- 
-        // set response language. Defaults to english.
-        Geocode.setLanguage("en");
-         
-        // set response region. Its optional.
-        // A Geocoding request with region=es (Spain) will return the Spanish city.
-        Geocode.setRegion("lt");
-         
-         
-        // Get address from latitude & longitude.
-        Geocode.fromLatLng(latitude, longitude).then(
-          response => {
-            const address = response.results[0].formatted_address;
-            console.log(address);
-          },
-          error => {
-            console.error(error);
-          }
-        );
+        let cities = ['Vilnius', 'Kaunas', 'Klaipėda', 'Šiauliai', 'Panėvežys'];
+        let coords = [{'latitude' : '54.687157', 'longitude' : '25.279652'}, {'latitude' : '54.898521', 'longitude' : '23.903597'}, {'latitude' : '55.703297', 'longitude' : '21.144279'},  {'latitude' : '55.932079', 'longitude' : '23.314220'}, {'latitude' : '55.737440', 'longitude' : '24.370330'}];
 
+        let nearestCoords = findNearest({'latitude' : latitude, 'longitude' : longitude}, coords);
+    
+        let city = "";
+
+        for (let i = 0; i < coords.length; i++) {
+            if (coords[i]['latitude'] == nearestCoords['latitude'] && coords[i]['longitude'] == nearestCoords['longitude']) {
+                city = cities[i];
+                break;
+            }
+        }
+        this.setState({
+            currentCity : city,
+            executedOnce : true,
+        });
+
+    }
+
+    updateLocation(city) {
+        this.setState({
+            currentCity : city, 
+        });
     }
 
     render() {
@@ -138,36 +178,23 @@ Ut non tincidunt nulla. Nulla tempor nisi ac dolor lobortis gravida. Suspendisse
         
         const geoUrl = '/map_data/eu.topojson';
 
-        if (this.props.isGeolocationAvailable && this.props.isGeolocationEnabled && this.props.coords) {
+        if (this.props.isGeolocationAvailable && this.props.isGeolocationEnabled && this.props.coords && !this.state.executedOnce) {
             this.getLocation(this.props.coords.longitude, this.props.coords.latitude);
         }
         return(
+
             <Container fluid={"true"} className="h-100 d-flex flex-column p-0" id="main-container">
                     <Switch>
                         <Route path="/air/map">
                             <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
-                            <div className="d-flex">
-                                <SideBar></SideBar>
-                            </div>
-                            <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal>
-                            <ComposableMap className="mx-auto my-auto">
-                                  <Geographies geography={geoUrl}>
-                                    {({ geographies }) =>
-                                      geographies.map(geo => <Geography key={geo.rsmKey} geography={geo} />)
-                                    }
-                                  </Geographies>
-                                </ComposableMap>                             
-                            </Route>
-                        <Route path="/disaster/radiation">
-                            <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
-                            <div className="d-flex">
-                                <SideBar></SideBar>
-                                <Content title={"Ką daryti, kai radiacija viršija normas?"} text={radiationDisasterText}></Content>
-                            </div>
-                            <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal>
-                            
-
-                            
+                            <div className="d-flex h-100 w-100 map-container">
+                                <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>
+                                <GoogleMap mapWidth={this.state.mapWidth}></GoogleMap>
+                            </div>              
+                            <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal> 
+                        </Route>
+                        <Route path="/">
+                            <Redirect from="/" to="/air/map" />
                         </Route>
                     </Switch>
             </Container>

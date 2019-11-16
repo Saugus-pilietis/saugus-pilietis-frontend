@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 html {
     height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 body {
@@ -31,8 +33,13 @@ h1 {
     font-size: 3em !important;
 }
 
+.dropdown-item:hover,
 .green-bg {
-    background-color: #6DAC4FFF;
+    background-color: #6DAC4FFF !important;
+}
+
+.dropdown-item:hover {
+    color: white !important;
 }
 
 .white-text {
@@ -49,6 +56,7 @@ h1 {
 
 a {
     color: inherit !important;
+    background-color: inherit !important;
 }
 
 .btn-link {
@@ -61,12 +69,20 @@ a:hover {
     text-decoration: none !important;
 }
 
+a:active {
+    color: inherit !important;
+}
+
 .h-8 {
     min-height: 8% !important;
     max-height: 8% !important;
 }
 
 @media (max-width: 768px) {
+
+    html {
+        overflow-y: auto;
+    }
 
     .responsive-margin {
         margin: 1em; 
@@ -97,22 +113,23 @@ a:hover {
         width: 100%;
     }
 
-        /* width */
     ::-webkit-scrollbar {
-      width: 0.6em;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-      background: lightgrey;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      background: white;
+        width: 0.6em !important;
     }
 
 }
+
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: lightgrey;
+}
+
+::-webkit-scrollbar {
+        width: 1em;
+    }
 
 .title-text {
     font-size: 1.7em;
@@ -179,6 +196,10 @@ svg {
     cursor: pointer;
 }
 
-.fa-mobile {
-    font-size: 2.4em;
+.fa-mobile-alt {
+    font-size: 2.6em;
+}
+
+.map-container {
+    overflow-y: hidden;
 }

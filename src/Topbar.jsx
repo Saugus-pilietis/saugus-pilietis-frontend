@@ -9,7 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { faMobile } from '@fortawesome/free-solid-svg-icons';
+import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import {
     Link
@@ -31,7 +31,7 @@ function TopBar(props) {
                     <FontAwesomeIcon className="mr-3 title-text" icon={faBars} id="collapse-nav" ref={props.collapseRef} onClick={props.collapseSideMenu.bind(props.that)}></FontAwesomeIcon>
                     <Link to="/" className="title-text">Saugus Pilietis</Link>
                 </Navbar.Brand>
-                <FontAwesomeIcon className="ml-0 white-text title-text mr-5" id="showQRModal" icon={faMobile} onClick={props.handleQRCode.bind(props.that)}></FontAwesomeIcon>
+                <FontAwesomeIcon className="ml-0 white-text title-text mr-5" id="showQRModal" icon={faMobileAlt} onClick={props.handleQRCode.bind(props.that)}></FontAwesomeIcon>
 
           </Navbar>
         </div>
