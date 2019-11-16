@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {key} from './api_key.js';
+
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
  
 export class GoogleMap extends React.Component {
@@ -19,14 +21,6 @@ export class GoogleMap extends React.Component {
   }
 }
 
-async function fetchKey() {
-      const response = await fetch("http://35.205.233.201:5000/api/keys/map_key");
-      return response.json()["api_key"];
-}
 
+export default (GoogleApiWrapper({'apiKey' : key})(GoogleMap));
 
-export default GoogleApiWrapper({
-  //apiKey: (fetchKey())
-   apiKey: ""
-})(GoogleMap)
- 
