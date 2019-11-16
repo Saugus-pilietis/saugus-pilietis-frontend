@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 html {
     height: 100%;
-    overflow: hidden;
 }
 
 body {
@@ -29,11 +28,11 @@ code {
 }
 
 h1 {
-    font-size: 7em !important;
+    font-size: 3em !important;
 }
 
 .green-bg {
-    background-color: #289F45;
+    background-color: #6DAC4FFF;
 }
 
 .white-text {
@@ -63,15 +62,56 @@ a:hover {
 }
 
 .h-8 {
-    min-height: 8 !important;
+    min-height: 8% !important;
+    max-height: 8% !important;
 }
 
 @media (max-width: 768px) {
+
+    .responsive-margin {
+        margin: 1em; 
+    }
+
+    .h-8 {
+        min-height: 10% !important;
+        max-height: 10% !important;
+    }
+
     .w-13 {
         position: relative;
         width: 100% !important;
         position: fixed;
     }
+
+    h1 {
+        font-size: 2em !important;
+    }
+
+    p {
+        font-size: 1.2em !important;
+    }
+
+    #sidebar-list {
+        max-height: 80% !important;
+        overflow-y: auto !important;
+        width: 100%;
+    }
+
+        /* width */
+    ::-webkit-scrollbar {
+      width: 0.6em;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: lightgrey;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: white;
+    }
+
 }
 
 .title-text {
@@ -102,10 +142,43 @@ a:hover {
 }
 
 #sidebar-collapse {
-    transition: margin 0.8s;
+    transition: margin 0.5s;
+    z-index: 10;
 }
 
 .negative-margin {
     margin-left: -50em !important;
 }
 
+p {
+    font-size: 1.5em;
+}
+
+.responsive-margin {
+    margin: 2em; 
+}
+
+.responsive-padding {
+    padding: 2em;
+}
+
+#topbar {
+    top: 0;
+    z-index: 11;
+}
+
+#hidden-top-bar {
+    opacity: 0;
+}
+
+.navbar-brand {
+    width: 100% !important;
+}
+
+svg {
+    cursor: pointer;
+}
+
+.fa-mobile {
+    font-size: 2.4em;
+}
