@@ -203,3 +203,18 @@ svg {
 .map-container {
     overflow-y: hidden;
 }
+
+h6 {
+    white-space: nowrap;
+}
+
+.circle {
+    width: 2em;
+    height: 2em;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background: green;
+    cursor: pointer;
+}
+

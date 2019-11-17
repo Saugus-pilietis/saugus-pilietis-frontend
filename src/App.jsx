@@ -12,6 +12,7 @@ import TopBar from './Topbar.jsx';
 import SideBar from './Sidebar.jsx';
 import Content from './Content.jsx';
 import GoogleMap from './GoogleMap.jsx';
+import AirQualityLevels from './AirQualityLevels.jsx'
 
 import {
     Switch,
@@ -38,6 +39,7 @@ let QRCode = require('qrcode.react');
 
 function QRCodeModal (props){
     return (
+
         <Modal className="d-flex flex-column justify-content-center" show={props.showQRCode} onHide={props.handleQRCode.bind(props.that)}>
             <Modal.Header closeButton className="w-100 d-flex">
                 <Modal.Title className="ml-auto">Atidaryti mobiliajame įrenginyje</Modal.Title>
@@ -66,6 +68,9 @@ class App extends React.Component {
             executedOnce : false,
             mapWidth :  0,
             currentMapState : 1,
+            currentCoordsLa : 54.687157,
+            currentCoordsLo : 25.279652
+
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -139,8 +144,8 @@ class App extends React.Component {
     }
 
     getLocation(longitude, latitude) {
-        let cities = ['Vilnius', 'Kaunas', 'Klaipėda', 'Šiauliai', 'Panėvežys'];
-        let coords = [{'latitude' : '54.687157', 'longitude' : '25.279652'}, {'latitude' : '54.898521', 'longitude' : '23.903597'}, {'latitude' : '55.703297', 'longitude' : '21.144279'},  {'latitude' : '55.932079', 'longitude' : '23.314220'}, {'latitude' : '55.737440', 'longitude' : '24.370330'}];
+        let cities = ['Vilnius', 'Kaunas', 'Klaipėda', 'Naujoji akmenė'];
+        let coords = [{'latitude' : 54.687157, 'longitude' : 25.279652}, {'latitude' : 54.898521, 'longitude' : 23.903597}, {'latitude' : 55.703297, 'longitude' : 21.144279},  {'latitude' : 56.321990, 'longitude' : 22.880060}];
 
         let nearestCoords = findNearest({'latitude' : latitude, 'longitude' : longitude}, coords);
     
@@ -155,32 +160,29 @@ class App extends React.Component {
         this.setState({
             currentCity : city,
             executedOnce : true,
+            currentCoordsLa : nearestCoords['latitude'],
+            currentCoordsLo : nearestCoords['longitude']
         });
 
     }
 
     updateLocation(city) {
+        let cityCords = {'Vilnius' : [54.687157, 25.279652], 'Kaunas' : [54.898521, 23.903597], 'Klaipėda' : [55.703297, 21.144279], 'Naujoji akmenė' : [56.321990, 22.880060]};
         this.setState({
-            currentCity : city, 
+            currentCity : city,
+            currentCoordsLa : cityCords[city][0],
+            currentCoordsLo : cityCords[city][1],
         });
     }
 
     render() {
-        let radiationDisasterText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget mi vehicula, auctor purus sed, fermentum justo. Nullam pretium fringilla massa, nec porta mauris congue sed. Vivamus dictum leo sit amet ex bibendum, vel imperdiet sem commodo. Integer sodales dapibus ante id placerat. Nunc eleifend justo mi, non congue nibh varius interdum. Donec eu augue libero. Praesent vehicula egestas elit. Nam rutrum mollis orci, sit amet molestie enim iaculis id. Mauris interdum neque eget maximus pretium. Suspendisse potenti.
-
-Ut congue lacinia aliquam. Ut sed justo quis ex posuere blandit. Aliquam arcu dui, varius et ligula ac, dignissim egestas nibh. Nunc quis odio in neque egestas vestibulum quis non nisi. Morbi sed libero ut velit pellentesque ultrices. Pellentesque tempus risus ligula, tristique consequat risus dictum vel. Proin et eros nec purus ornare finibus.
-
-Phasellus facilisis cursus nunc, convallis pulvinar turpis vehicula sit amet. Integer sit amet velit nec ipsum hendrerit euismod eget sit amet enim. Ut eget suscipit augue. Donec blandit a ex at consectetur. Maecenas dictum vitae metus sit amet efficitur. Aliquam in urna semper, mollis neque eget, faucibus diam. Phasellus porta neque rhoncus ipsum eleifend dictum. Suspendisse a velit consectetur, ullamcorper quam nec, maximus justo. Nullam pellentesque tristique eros vel suscipit. Phasellus vel ultrices ex. Aenean faucibus in orci nec gravida.
-
-Donec tincidunt libero nec suscipit luctus. Integer finibus luctus elit sed pellentesque. Ut quis turpis ipsum. Quisque eget vehicula elit. In vel laoreet velit. Vivamus vehicula, lorem a sagittis dignissim, lorem leo fringilla ante, ut consectetur sem nunc vitae orci. Proin id lacus diam. Donec volutpat tellus quis magna pellentesque eleifend. Morbi molestie vel odio vitae varius. Phasellus dui lectus, hendrerit at nisi nec, faucibus maximus risus. Duis semper, felis et suscipit ornare, augue dolor euismod eros, sit amet feugiat orci neque vel orci. Integer posuere, libero ac maximus ultricies, nunc sapien rhoncus lorem, lacinia efficitur ipsum turpis quis magna. Curabitur pellentesque quam nibh, lacinia hendrerit elit condimentum facilisis.
-
-Ut non tincidunt nulla. Nulla tempor nisi ac dolor lobortis gravida. Suspendisse quis consequat lacus. Donec lacinia erat eros, non efficitur erat tristique quis. Aenean eu mi vel lorem euismod vestibulum. Nullam eu nulla tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.`;
-        
-        const geoUrl = '/map_data/eu.topojson';
 
         if (this.props.isGeolocationAvailable && this.props.isGeolocationEnabled && this.props.coords && !this.state.executedOnce) {
             this.getLocation(this.props.coords.longitude, this.props.coords.latitude);
         }
+
+        document.title = "Švari aplinka"
+
         return(
 
             <Container fluid={"true"} className="h-100 d-flex flex-column p-0" id="main-container">
@@ -189,8 +191,21 @@ Ut non tincidunt nulla. Nulla tempor nisi ac dolor lobortis gravida. Suspendisse
                             <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
                             <div className="d-flex h-100 w-100 map-container">
                                 <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>
-                                <GoogleMap mapWidth={this.state.mapWidth}></GoogleMap>
+                                <GoogleMap mapWidth={this.state.mapWidth} currentCoordsLo={this.state.currentCoordsLo} currentCoordsLa={this.state.currentCoordsLa}></GoogleMap>
                             </div>              
+                            <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal> 
+                        </Route>
+                        <Route path="/air/explanation">
+                            <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
+                            <div className="d-flex h-100 w-100 map-container">
+                                <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>
+                                <AirQualityLevels/>
+                            </div>
+                            <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal>
+                        </Route>
+                        <Route path="/air/statistics">
+                            <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
+                            <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>           
                             <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal> 
                         </Route>
                         <Route path="/">

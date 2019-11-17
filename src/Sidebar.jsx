@@ -24,7 +24,7 @@ function SideBar(props) {
                                     <Accordion>
                                         <Card>
                                             <Card.Header>
-                                              <Accordion.Toggle as={Button} variant="link" eventKey="0" className="white-text list-item-text">
+                                              <Accordion.Toggle as={Button} variant="link" eventKey="0" className="white-text list-item-text pl-0">
                                                 Oro tarša
                                               </Accordion.Toggle>
                                             </Card.Header>
@@ -32,21 +32,7 @@ function SideBar(props) {
                                               <Card.Body>
                                                   <Link to="/air/map"><ListGroup.Item>Žemėlapis</ListGroup.Item></Link>
                                                   <Link to="/air/statistics"><ListGroup.Item>Statistika</ListGroup.Item></Link>
-                                              </Card.Body>
-                                            </Accordion.Collapse>
-                                        </Card>
-                                        <Card>
-                                            <Card.Header>
-                                              <Accordion.Toggle as={Button} variant="link" eventKey="2" className="white-text list-item-text">
-                                                Radiacijos lygis
-                                              </Accordion.Toggle>
-                                            </Card.Header>
-                                        </Card>
-                                        <Card>
-                                            <Accordion.Collapse eventKey="2">
-                                              <Card.Body>
-                                                  <Link to="/radiation/map"><ListGroup.Item>Žemėlapis</ListGroup.Item></Link>
-                                                  <Link to="/radiation/statistics"><ListGroup.Item>Statistika</ListGroup.Item></Link>
+                                                  <Link to="/air/explanation"><ListGroup.Item>Taršos lygiai</ListGroup.Item></Link>
                                               </Card.Body>
                                             </Accordion.Collapse>
                                         </Card>
@@ -62,8 +48,7 @@ function SideBar(props) {
                                         <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Kaunas")}>Kaunas</Dropdown.Item>
                                         <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Klaipėda")}>Klaipėda</Dropdown.Item>
                                         <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Vilnius")}>Vilnius</Dropdown.Item>
-                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Šiauliai")}>Šiauliai</Dropdown.Item>
-                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Panevėžys")}>Panevėžys</Dropdown.Item>
+                                        <Dropdown.Item onClick={props.updateLocation.bind(props.that, "Naujoji akmenė")}>Naujoji akmenė</Dropdown.Item>
                                     </DropdownButton>
                                 </ListGroup.Item>
                             </ListGroup>
