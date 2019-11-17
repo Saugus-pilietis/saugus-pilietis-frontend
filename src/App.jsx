@@ -13,6 +13,7 @@ import SideBar from './Sidebar.jsx';
 import Content from './Content.jsx';
 import GoogleMap from './GoogleMap.jsx';
 import AirQualityLevels from './AirQualityLevels.jsx'
+import Graphs from './Graphs.jsx'
 
 import {
     Switch,
@@ -173,6 +174,9 @@ class App extends React.Component {
             currentCoordsLa : cityCords[city][0],
             currentCoordsLo : cityCords[city][1],
         });
+        if (window.innerWidth <= 768) {
+            this.collapseSideMenu();            
+        }
     }
 
     render() {
@@ -197,7 +201,7 @@ class App extends React.Component {
                         </Route>
                         <Route path="/air/explanation">
                             <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
-                            <div className="d-flex h-100 w-100 map-container">
+                            <div className="d-flex h-100 w-100">
                                 <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>
                                 <AirQualityLevels/>
                             </div>
@@ -205,7 +209,11 @@ class App extends React.Component {
                         </Route>
                         <Route path="/air/statistics">
                             <TopBar that={this.that} collapseSideMenu={this.collapseSideMenu} handleQRCode={this.handleQRCode}></TopBar>
-                            <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>           
+                            <div className="d-flex h-100 w-100">
+                                <SideBar that={this.that} currentCity={this.state.currentCity} updateLocation={this.updateLocation}></SideBar>
+                                <Graphs></Graphs>
+                                <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal> 
+                            </div>
                             <QRCodeModal showQRCode={this.state.showQRCode} that={this.that} handleQRCode={this.handleQRCode}></QRCodeModal> 
                         </Route>
                         <Route path="/">

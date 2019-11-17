@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import ReactSpeedometer from "react-d3-speedometer"
 
 
-const Station = ({ text, value, refToPass, toggleStations }) => <div><div className="circle" onClick={() => toggleStations(refToPass)}></div><div ref={refToPass} className="bg-white p-3 d-none"><ReactSpeedometer segmentColors={["green", "yellow", "orange", "red", "purple", "black"]} customSegmentStops={[0, 50, 100, 150, 200, 300, 400]} segments={6} maxValue={400}  value={value} height={100} width={150}/><h6 className="d-table-row">{text}</h6></div></div>;
+const Station = ({ text, value, refToPass, toggleStations }) => <div><div className="circle" onClick={() => toggleStations(refToPass)}></div><div ref={refToPass} className="bg-white p-3 d-none"><ReactSpeedometer segmentColors={["green", "yellow", "orange", "red", "purple", "maroon"]} customSegmentStops={[0, 50, 100, 150, 200, 300, 400]} segments={6} maxValue={400}  value={value} height={100} width={150}/><h6 className="d-table-row text-center">{text}</h6></div></div>;
 
 
 class GoogleMap extends React.Component {
@@ -49,7 +49,7 @@ class GoogleMap extends React.Component {
     render() {
         return (
           // Important! Always set the container height explicitly
-          <div style={{ height: '100%', width: '100%' }}>
+          <div className="h-100 w-100">
             <GoogleMapReact
               bootstrapURLKeys={{ key: key }}
               defaultCenter={{lat : this.props.currentCoordsLa, lng : this.props.currentCoordsLo}}

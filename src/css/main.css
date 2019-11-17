@@ -2,7 +2,6 @@
 html {
     height: 100%;
     overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 body {
@@ -218,3 +217,6 @@ h6 {
     cursor: pointer;
 }
 
+canvas {
+    height: 89% !important;
+}
